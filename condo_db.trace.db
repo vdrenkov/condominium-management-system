@@ -1,0 +1,6 @@
+2022-12-13 12:17:59 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "TENANTS" not found (this database is empty); SQL statement:
+insert into tenants (id, birth_date, email, name, phone_number) values (default, ?, ?, ?, ?) [42104-214]
+2022-12-13 12:20:22 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "TENANTS" not found (this database is empty); SQL statement:
+insert into tenants (id, birth_date, email, name, phone_number) values (default, ?, ?, ?, ?) [42104-214]
