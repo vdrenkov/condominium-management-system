@@ -7,7 +7,9 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.mjt.condo.exceptions.TenantNotFoundException;
+import com.mjt.condo.models.Apartment;
 import com.mjt.condo.models.Tenant;
+import com.mjt.condo.repositories.ApartmentRepository;
 import com.mjt.condo.repositories.TenantRepository;
 
 @Service
@@ -15,6 +17,12 @@ public class TenantService {
 
 	@Autowired
 	private TenantRepository tenantRepo;
+
+	@Autowired
+	private ApartmentRepository apartmentRepo;
+
+	@Autowired
+	private ApartmentService apartmentService;
 
 	public List<Tenant> findAllTenants() {
 		return tenantRepo.findAll();
@@ -30,11 +38,26 @@ public class TenantService {
 	}
 
 	public Tenant updateTenant(Long id, Tenant updatedTenant) throws TenantNotFoundException {
-	Tenant oldTenant=tenantRepo.findById(id)
+		List<Apartment> apartments = apartmentService.findAllApartments();
+		List<Tenant> tenants = tenantRepo.findAll();
+		Tenant oldTenant = tenantRepo.findById(id)
 				.orElseThrow(() -> new TenantNotFoundException("The tenant you are trying to modify does not exist."));
 
 		tenantRepo.delete(oldTenant);
 		tenantRepo.save(updatedTenant);
+
+		for (Tenant tenant : tenants) {
+			if (tenant.getPhoneNumber() == updatedTenant.getPhoneNumber())
+				updatedTenant.setId(tenant.getId());
+		}
+
+		for (Apartment apartment : apartments) {
+			if (apartment.getTenant_id() == oldTenant.getId()) {
+				apartment.setTenant_id(updatedTenant.getId());
+				apartmentRepo.save(apartment);
+			}
+		}
+
 		return updatedTenant;
 	}
 

@@ -15,48 +15,46 @@ import lombok.SneakyThrows;
 
 @RestController
 @RequestMapping("/tenants")
-public class TenantController{
+public class TenantController {
+
+	@Autowired
+	private TenantService tenantService;
+
+	@GetMapping()
+	public ResponseEntity<List<Tenant>> getAllTenants() {
+		return ResponseEntity.ok(tenantService.findAllTenants());
+	}
 	
-    @Autowired
-    private TenantService tenantService;
+	@SneakyThrows
+	@GetMapping("/{id}")
+	public ResponseEntity<Tenant> getTenantById(@PathVariable Long id) throws TenantNotFoundException {
+		return ResponseEntity.ok(tenantService.findTenantById(id));
+	}
 
-    @GetMapping()
-    public ResponseEntity<List<Tenant>> getAllTenants(){
-            return ResponseEntity.ok(tenantService.findAllTenants());
-    }
+	@SneakyThrows
+	@PostMapping()
+	public ResponseEntity<Tenant> addTenant(@RequestBody Tenant tenant) {
+		tenantService.saveTenant(tenant);
+		return new ResponseEntity<Tenant>(tenant, HttpStatus.CREATED);
+	}
 
-    @SneakyThrows
-    @GetMapping("/{id}")
-    public ResponseEntity<Tenant> getTenantById(@PathVariable Long id) throws TenantNotFoundException {
-    	Tenant tenant = tenantService.findTenantById(id);
-        return ResponseEntity.ok(tenant);
-    }
+	@SneakyThrows
+	@PutMapping("/{id}")
+	public ResponseEntity<Tenant> updateTenant(@PathVariable Long id, @RequestBody Tenant tenant)
+			throws TenantNotFoundException {
+		Tenant updatedTenant = tenantService.updateTenant(id, tenant);
+		return ResponseEntity.ok(updatedTenant);
+	}
 
-    @SneakyThrows
-    @PostMapping()
-    public ResponseEntity<Tenant> addTenant(@RequestBody Tenant tenant) {
-        tenantService.saveTenant(tenant);
-        return new ResponseEntity<Tenant>(tenant, HttpStatus.CREATED);
-    }
+	@SneakyThrows
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Long> deleteTenant(@PathVariable Long id) throws TenantNotFoundException {
+		tenantService.deleteTenantById(id);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 
-    @SneakyThrows
-    @PutMapping("/{id}")
-    public ResponseEntity<Tenant> updateTenant(@PathVariable Long id, @RequestBody Tenant tenant) throws TenantNotFoundException {
-        Tenant updatedTenant = tenantService.updateTenant(id, tenant);
-        return ResponseEntity.ok(updatedTenant);
-    }
-
-    @SneakyThrows
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Long> deleteTenant(@PathVariable Long id) throws TenantNotFoundException {
-    	tenantService.deleteTenantById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @ExceptionHandler(value = TenantNotFoundException.class)
-    private ResponseEntity<String> handleTenantNotFoundException(TenantNotFoundException e) {
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(e.getMessage());
-    }
-    }
+	@ExceptionHandler(value = TenantNotFoundException.class)
+	private ResponseEntity<String> handleTenantNotFoundException(TenantNotFoundException e) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	}
+}

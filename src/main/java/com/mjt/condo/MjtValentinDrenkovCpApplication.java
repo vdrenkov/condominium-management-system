@@ -17,3 +17,4 @@ public class MjtValentinDrenkovCpApplication {
 //TODO Configuration (mapper, web security)
 //TODO Authentication
 //TODO Utils
+//TODO Check Modify Tenant for apartment assignment

@@ -11,16 +11,15 @@ import lombok.*;
 public class Apartment {
 	
 	@Id	
-	@Column(unique=true, nullable=false, updatable=false)
+	@Column(unique=true, nullable=false, insertable = false, updatable = false)
  private Long number;
 	
 	@Column(nullable=false)
  private int numberOfRooms;
 	
-	@Column()
+	@Column(nullable=false)
  private double rent;
 	
-@ManyToOne(cascade=CascadeType.ALL)
-@JoinColumn(name="tenant_id")
-private Tenant tenant;
+@Column(nullable=true,updatable=true)
+private Long tenant_id;
 }

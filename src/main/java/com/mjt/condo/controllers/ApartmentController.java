@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.mjt.condo.exceptions.ApartmentNotFoundException;
 import com.mjt.condo.models.Apartment;
+import com.mjt.condo.models.ApartmentDTO;
 import com.mjt.condo.services.ApartmentService;
 
 import lombok.SneakyThrows;
@@ -20,16 +21,36 @@ public class ApartmentController {
 	@Autowired
 	private ApartmentService apartmentService;
 
+	@GetMapping("/count/{id}")
+	public ResponseEntity<Long> getApartmentsCount(@PathVariable Long id) {
+		return ResponseEntity.ok(apartmentService.apartmentCount(id));
+	}
+	
+	@GetMapping("/show/{id}")
+	public ResponseEntity<List<Apartment>> showAllApartments(@PathVariable Long id) {
+		return ResponseEntity.ok(apartmentService.showAllApartments(id));
+	}
+	
 	@GetMapping()
 	public ResponseEntity<List<Apartment>> getAllApartments() {
 		return ResponseEntity.ok(apartmentService.findAllApartments());
+	}
+	
+	@GetMapping("/dto")
+	public ResponseEntity<List<ApartmentDTO>> getAllApartmentDTOs() {
+		return ResponseEntity.ok(apartmentService.findAllApartmentDTOs());
 	}
 
 	@SneakyThrows
 	@GetMapping("/{id}")
 	public ResponseEntity<Apartment> getApartmentById(@PathVariable Long id) throws ApartmentNotFoundException {
-		Apartment apartment = apartmentService.findApartmentById(id);
-		return ResponseEntity.ok(apartment);
+		return ResponseEntity.ok(apartmentService.findApartmentById(id));
+	}
+	
+	@SneakyThrows
+	@GetMapping("/dto/{id}")
+	public ResponseEntity<Apartment> getApartmentDTOById(@PathVariable Long id) throws ApartmentNotFoundException {
+		return ResponseEntity.ok(apartmentService.findApartmentById(id));
 	}
 
 	@SneakyThrows
