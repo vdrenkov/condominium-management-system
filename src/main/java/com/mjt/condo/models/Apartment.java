@@ -1,6 +1,7 @@
 package com.mjt.condo.models;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
+
 import lombok.*;
 
 @Entity

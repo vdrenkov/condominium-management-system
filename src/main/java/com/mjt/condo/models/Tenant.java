@@ -3,7 +3,7 @@ package com.mjt.condo.models;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 
 @Entity
@@ -13,9 +13,6 @@ import lombok.*;
 @Table(name = "tenants")
 public class Tenant implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id

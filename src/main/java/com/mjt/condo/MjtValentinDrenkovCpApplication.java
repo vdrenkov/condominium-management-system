@@ -11,10 +11,3 @@ public class MjtValentinDrenkovCpApplication {
 	}
 
 }
-//TODO Table connections
-//TODO DTO/DAO + Converter
-//TODO Spring Security
-//TODO Configuration (mapper, web security)
-//TODO Authentication
-//TODO Utils
-//TODO Check Modify Tenant for apartment assignment
